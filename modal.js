@@ -40,6 +40,14 @@ function closeModalFunction() {
   modalbg.style.display = "none";
 }
 
+// variables pour stocker les valeurs validées pour le formulaire
+let firstNameValue;
+let lastNameValue;
+let emailValue;
+let NumberOfTournamentValue;
+let locationValue;
+let checkboxValue;
+
 
 //            VALIDATION DU PRENOM
 
@@ -52,6 +60,7 @@ function firstCheck() {
     return false;
   }
   console.log("Prénom valide");
+  firstNameValue = firstValue;
   return true;
 }
 
@@ -65,6 +74,7 @@ function lastCheck() {
     return false;
   }
   console.log("Nom valide");
+  lastNameValue = lastValue;
   return true;
 }
 
@@ -72,12 +82,13 @@ function lastCheck() {
 
 function emailCheck() {
   const emailInput = document.querySelector('#email');
-  const emailValue = emailInput.value;
+  const mailValue = emailInput.value;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isEmailValid = emailRegex.test(emailValue);
+  const isEmailValid = emailRegex.test(mailValue);
 
   if (!isEmailValid) {
     console.log("Mail invalide");
+    emailValue = mailValue;
     return false;
   }
   console.log("Mail valide");
@@ -95,6 +106,7 @@ function quantityCheck() {
     return false;
   }
   console.log("Nombre valide");
+  NumberOfTournamentValue = quantityValue;
   return true;
 }
 
@@ -107,6 +119,7 @@ function locationCheck() {
   for (let i = 0; i < locationInputs.length; i++) {
     if (locationInputs[i].checked) {
       isLocationValid = true;
+      locationValue = locationInputs[i].value;
       break;
     }
   }
@@ -130,6 +143,7 @@ function checkboxCheck() {
     return false;
   }
   console.log("Conditions générales valides");
+  checkboxValue = true;
   return true;
 }
 
@@ -143,10 +157,10 @@ function validate() {
   const isCheckboxValid = checkboxCheck();
 
   if (!isFirstNameValid || !isLastNameValid || !isEmailValid || !isQuantityValid || !isLocationValid || !isCheckboxValid) {
-    console.log("Le formulaire est valide");
+    console.log("Le formulaire est invalide");
     return false;
   }
-  console.log("Le formulaire est invalide");
+  console.log("Le formulaire est valide");
   return true;
 }
 
