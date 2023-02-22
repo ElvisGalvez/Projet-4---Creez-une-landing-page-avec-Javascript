@@ -90,7 +90,7 @@ function quantityCheck() {
   const quantityInput = document.querySelector('#quantity');
   const quantityValue = quantityInput.value;
   
-  if (isNaN(quantityValue)) {
+  if (isNaN(quantityValue) || quantityValue === '') {
     console.log("Nombre invalide");
     return false;
   }
@@ -110,7 +110,13 @@ function locationCheck() {
       break;
     }
   }
-  console.log("Bouton radio valide");
+
+  if (!isLocationValid) {
+    console.log("Bouton radio invalide");
+  } else {
+    console.log("Bouton radio valide");
+  }
+
   return isLocationValid;
 }
 
