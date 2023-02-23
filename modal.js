@@ -49,18 +49,36 @@ let locationValue;
 let checkboxValue;
 
 
+
 //            VALIDATION DU PRENOM
 
 function firstCheck() {
   const firstInput = document.querySelector('#first');
-  const firstValue = firstInput.value;
-  
+  const firstValue = firstInput.value.trim();
+
+  // Recherche d'un message d'erreur pour ce champ
+  const errorMessage = firstInput.parentNode.querySelector('.error-message');
+
   if (firstValue.length < 2 || firstValue === ''){
     console.log("Prénom invalide");
+    // Création et ajout du message d'erreur s'il n'existe pas encore
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "Le prénom est invalide. Il doit comporter au moins deux caractères.";
+      firstInput.parentNode.appendChild(newErrorMessage);
+    }
     return false;
   }
+
   console.log("Prénom valide");
   firstNameValue = firstValue;
+
+  // Suppression du message d'erreur s'il existe
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+
   return true;
 }
 
@@ -68,30 +86,48 @@ function firstCheck() {
 
 function lastCheck() {
   const lastInput = document.querySelector('#last');
-  const lastValue = lastInput.value;
+  const lastValue = lastInput.value.trim();
+
+  // Recherche d'un message d'erreur pour ce champ
+  const errorMessage = lastInput.parentNode.querySelector('.error-message');
+
   if (lastValue.length < 2 || lastValue === ''){
     console.log("Nom invalide");
+    // Création et ajout du message d'erreur s'il n'existe pas encore
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "Le nom est invalide. Il doit comporter au moins deux caractères.";
+      lastInput.parentNode.appendChild(newErrorMessage);
+    }
     return false;
   }
+
   console.log("Nom valide");
   lastNameValue = lastValue;
+
+  // Suppression du message d'erreur s'il existe
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+
   return true;
 }
 
 //            VALIDATION DU MAIL
 
 function emailCheck() {
-  const emailInput = document.querySelector('#email');
-  const mailValue = emailInput.value;
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isEmailValid = emailRegex.test(mailValue);
+  const mailInput = document.querySelector('#email');
+  const mailValue = mailInput.value.trim();
+  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isEmailValid = mailRegex.test(mailValue);
 
   if (!isEmailValid) {
     console.log("Mail invalide");
-    emailValue = mailValue;
     return false;
   }
   console.log("Mail valide");
+  emailValue = mailValue;
   return true;
 }
 
@@ -99,14 +135,21 @@ function emailCheck() {
 
 function quantityCheck() {
   const quantityInput = document.querySelector('#quantity');
-  const quantityValue = quantityInput.value;
+  const quantityValue = quantityInput.value.trim();
   
-  if (isNaN(quantityValue) || quantityValue === '') {
+  if (quantityValue === '') {
     console.log("Nombre invalide");
     return false;
   }
+
+  const quantityNumber = Number(quantityValue);
+  if (!Number.isInteger(quantityNumber) || quantityNumber < 0) {
+    console.log("Nombre invalide");
+    return false;
+  }
+  
   console.log("Nombre valide");
-  NumberOfTournamentValue = quantityValue;
+  NumberOfTournamentValue = quantityNumber;
   return true;
 }
 
@@ -156,16 +199,20 @@ function validate() {
   const isLocationValid = locationCheck();
   const isCheckboxValid = checkboxCheck();
 
-  if (!isFirstNameValid || !isLastNameValid || !isEmailValid || !isQuantityValid || !isLocationValid || !isCheckboxValid) {
+  if (isFirstNameValid && isLastNameValid && isEmailValid && isQuantityValid && isLocationValid && isCheckboxValid) {
+    console.log("Le formulaire est valide");
+    return true;
+  } else {
     console.log("Le formulaire est invalide");
     return false;
   }
-  console.log("Le formulaire est valide");
-  return true;
 }
 
-form.addEventListener('submit', function (event) {
-  if (!validate()) {
-    event.preventDefault();
+const submitButton = document.querySelector('#formSubmit');
+
+submitButton.addEventListener('click', function(event) {
+  event.preventDefault(); // empêche l'envoi automatique du formulaire
+  if (validate()) {
+    form.submit(); // envoie le formulaire
   }
 });
