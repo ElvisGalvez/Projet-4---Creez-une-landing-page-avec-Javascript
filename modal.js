@@ -122,12 +122,76 @@ function emailCheck() {
   const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const isEmailValid = mailRegex.test(mailValue);
 
+  // Recherche d'un message d'erreur pour ce champ
+  const errorMessage = mailInput.parentNode.querySelector('.error-message');
+
   if (!isEmailValid) {
     console.log("Mail invalide");
+    // Création et ajout du message d'erreur s'il n'existe pas encore
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "L'adresse e-mail est invalide.";
+      mailInput.parentNode.appendChild(newErrorMessage);
+    }
     return false;
   }
   console.log("Mail valide");
   emailValue = mailValue;
+
+  // Suppression du message d'erreur s'il existe
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+
+  return true;
+}
+
+//            VALIDATION DATE DE NAISSANCE
+
+function birthdateCheck() {
+  const birthdateInput = document.querySelector('#birthdate');
+  const birthdateValue = birthdateInput.value.trim();
+  const errorMessage = birthdateInput.parentNode.querySelector('.error-message');
+  const currentDate = new Date();
+  const minAge = 15;
+  const minBirthdate = new Date(currentDate.getFullYear() - minAge, currentDate.getMonth(), currentDate.getDate());
+  
+  if (birthdateValue === '') {
+    console.log("Date de naissance invalide");
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "Vous devez entrer votre date de naissance.";
+      birthdateInput.parentNode.appendChild(newErrorMessage);
+    } else {
+      errorMessage.textContent = "Vous devez entrer votre date de naissance.";
+    }
+    return false;
+  }
+  
+  const birthdate = new Date(birthdateValue);
+
+  if (birthdate > minBirthdate) {
+    console.log("Date de naissance invalide");
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "Vous devez être âgé d'au moins 15 ans.";
+      birthdateInput.parentNode.appendChild(newErrorMessage);
+    } else {
+      errorMessage.textContent = "Vous devez être âgé d'au moins 15 ans.";
+    }
+    return false;
+  }
+
+  console.log("Date de naissance valide");
+
+  // Suppression du message d'erreur s'il existe
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+
   return true;
 }
 
@@ -136,28 +200,51 @@ function emailCheck() {
 function quantityCheck() {
   const quantityInput = document.querySelector('#quantity');
   const quantityValue = quantityInput.value.trim();
-  
+  const errorMessage = quantityInput.parentNode.querySelector('.error-message');
+
   if (quantityValue === '') {
     console.log("Nombre invalide");
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "Veuillez indiquer un nombre.";
+      quantityInput.parentNode.appendChild(newErrorMessage);
+    }
     return false;
   }
 
   const quantityNumber = Number(quantityValue);
-  if (!Number.isInteger(quantityNumber) || quantityNumber < 0) {
+  if (quantityNumber < 0) {
     console.log("Nombre invalide");
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "Veuillez indiquer un nombre.";
+      quantityInput.parentNode.appendChild(newErrorMessage);
+    }
     return false;
   }
-  
+
   console.log("Nombre valide");
   NumberOfTournamentValue = quantityNumber;
+  
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+
   return true;
 }
 
 //            VALIDATION BOUTONS RADIO
 
+/**
+     * Vérifie si une localisation est cochée
+     */
+
 function locationCheck() {
   const locationInputs = document.querySelectorAll('input[name="location"]');
   let isLocationValid = false;
+  const errorMessage = document.querySelector('#location-error-message');
 
   for (let i = 0; i < locationInputs.length; i++) {
     if (locationInputs[i].checked) {
@@ -169,24 +256,49 @@ function locationCheck() {
 
   if (!isLocationValid) {
     console.log("Bouton radio invalide");
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.setAttribute('id', 'location-error-message');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "Vous devez sélectionner une localisation.";
+      const lastLocationInput = locationInputs[locationInputs.length - 1];
+      lastLocationInput.parentNode.parentNode.insertBefore(newErrorMessage, lastLocationInput.parentNode.nextSibling);
+    }
+    return false;
   } else {
     console.log("Bouton radio valide");
+    if (errorMessage) {
+      errorMessage.remove();
+    }
+    return true;
   }
-
-  return isLocationValid;
 }
 
 //            VALIDATION CONDITIONS GENERALES
 
 function checkboxCheck() {
   const checkboxInput = document.querySelector('#checkbox1');
-  
+  const errorMessage = checkboxInput.parentNode.querySelector('.error-message');
+
   if (!checkboxInput.checked) {
     console.log("Conditions générales invalides");
+    // Création et ajout du message d'erreur s'il n'existe pas encore
+    if (!errorMessage) {
+      const newErrorMessage = document.createElement('div');
+      newErrorMessage.classList.add('error-message');
+      newErrorMessage.textContent = "Vous devez vérifier que vous acceptez les termes et conditions.";
+      checkboxInput.parentNode.appendChild(newErrorMessage);
+    }
     return false;
   }
   console.log("Conditions générales valides");
   checkboxValue = true;
+
+  // Suppression du message d'erreur s'il existe
+  if (errorMessage) {
+    errorMessage.remove();
+  }
+
   return true;
 }
 
@@ -195,11 +307,12 @@ function validate() {
   const isFirstNameValid = firstCheck();
   const isLastNameValid = lastCheck();
   const isEmailValid = emailCheck();
+  const isBirthdateValid = birthdateCheck();
   const isQuantityValid = quantityCheck();
   const isLocationValid = locationCheck();
   const isCheckboxValid = checkboxCheck();
 
-  if (isFirstNameValid && isLastNameValid && isEmailValid && isQuantityValid && isLocationValid && isCheckboxValid) {
+  if (isFirstNameValid && isLastNameValid && isEmailValid && isBirthdateValid && isQuantityValid && isLocationValid && isCheckboxValid) {
     console.log("Le formulaire est valide");
     return true;
   } else {
