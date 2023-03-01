@@ -18,8 +18,8 @@ function launchModal() {
 // Fonction déclenchée lorsque l'on clique sur l'icône de la barre de navigation en version mobile
 // Modifie la classe CSS de l'élément ID "MyTopnav" afin d'ajouter ou supprimer la classe "responsive"
 
-function editNav() { 
-  var x = document.getElementById("myTopnav"); 
+function editNav() {
+  var x = document.getElementById("myTopnav");
   if (x.className === "topnav") {
     x.className += " responsive";
   } else {
@@ -53,28 +53,42 @@ let checkboxValue;
 //            VALIDATION DU PRENOM
 
 function firstCheck() {
+
+// récupère la valeur du champ "prénom" et la définie dans une constante 'firstInput'
+// défini une constante en utilisant la propriété value de 'firstInput'
   const firstInput = document.querySelector('#first');
   const firstValue = firstInput.value.trim();
 
-  // Recherche d'un message d'erreur pour ce champ
+// Recherche d'un message d'erreur éventuellement déjà créé dans le parent de 'firstInput'
   const errorMessage = firstInput.parentNode.querySelector('.error-message');
 
-  if (firstValue.length < 2 || firstValue === ''){
+// Vérifie les conditions de non-validité de la fonction
+  if (firstValue.length < 2 || firstValue === '') {
     console.log("Prénom invalide");
-    // Création et ajout du message d'erreur s'il n'existe pas encore
+
+  // Création et ajout du message d'erreur s'il n'existe pas encore
     if (!errorMessage) {
       const newErrorMessage = document.createElement('div');
+
+      // ajoute une classe à 'newErrorMessage'
       newErrorMessage.classList.add('error-message');
+
+      // ajoute du texte à 'newErrorMessage'
       newErrorMessage.textContent = "Le prénom est invalide. Il doit comporter au moins deux caractères.";
+
+      //  ajoute 'newErrorMessage' en tant qu'enfant du parent de 'firstInput'.
       firstInput.parentNode.appendChild(newErrorMessage);
     }
     return false;
   }
 
   console.log("Prénom valide");
+
+  // En cas de validité, stocke la valeur de 'firstValue' dans 'firstNameValue'
   firstNameValue = firstValue;
 
-  // Suppression du message d'erreur s'il existe
+// test de l'existence de errorMessage dans le parent de firstInput
+// supprime errorMessage du DOM
   if (errorMessage) {
     errorMessage.remove();
   }
@@ -85,28 +99,40 @@ function firstCheck() {
 //            VALIDATION DU NOM
 
 function lastCheck() {
+
+// récupère la valeur du champ "nom" et la définie dans une constante 'lastInput'
+// défini une constante en utilisant la propriété value de 'lastInput'
   const lastInput = document.querySelector('#last');
   const lastValue = lastInput.value.trim();
 
-  // Recherche d'un message d'erreur pour ce champ
+ // Recherche d'un message d'erreur éventuellement déjà créé dans le parent de 'lastInput'
   const errorMessage = lastInput.parentNode.querySelector('.error-message');
 
-  if (lastValue.length < 2 || lastValue === ''){
+  // Vérifie les conditions de non-validité de la fonction
+  if (lastValue.length < 2 || lastValue === '') {
     console.log("Nom invalide");
-    // Création et ajout du message d'erreur s'il n'existe pas encore
+  // Création et ajout du message d'erreur s'il n'existe pas encore
     if (!errorMessage) {
       const newErrorMessage = document.createElement('div');
+
+      // ajoute une classe à 'newErrorMessage'
       newErrorMessage.classList.add('error-message');
+
+       // ajoute du texte à 'newErrorMessage'
       newErrorMessage.textContent = "Le nom est invalide. Il doit comporter au moins deux caractères.";
+
+      //  ajoute 'newErrorMessage' en tant qu'enfant du parent de 'firstInput'.
       lastInput.parentNode.appendChild(newErrorMessage);
     }
     return false;
   }
 
+  // En cas de validité, stocke la valeur de 'lastValue' dans 'lastNameValue'
   console.log("Nom valide");
   lastNameValue = lastValue;
 
-  // Suppression du message d'erreur s'il existe
+// test de l'existence de errorMessage dans le parent de firstInput
+// supprime errorMessage du DOM
   if (errorMessage) {
     errorMessage.remove();
   }
@@ -114,18 +140,25 @@ function lastCheck() {
   return true;
 }
 
+
 //            VALIDATION DU MAIL
 
 function emailCheck() {
+
+// récupère la valeur du champ "email" et la définie dans une constante 'mailInput'
+// défini une constante en utilisant la propriété value de 'mailInput'
   const mailInput = document.querySelector('#email');
   const mailValue = mailInput.value.trim();
-  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const isEmailValid = mailRegex.test(mailValue);
 
-  // Recherche d'un message d'erreur pour ce champ
+  // défini une constante avec une expression régulière pour vérifier le format du mail
+  const mailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // stocke la valeur valide du mail si 'mailValue' passe le test de 'mailRegex'
+  const mailValid = mailRegex.test(mailValue);
+
+  // Recherche d'un message d'erreur éventuellement déjà créé dans le parent de 'mailInput'
   const errorMessage = mailInput.parentNode.querySelector('.error-message');
 
-  if (!isEmailValid) {
+  if (!mailValid) {
     console.log("Mail invalide");
     // Création et ajout du message d'erreur s'il n'existe pas encore
     if (!errorMessage) {
@@ -156,7 +189,7 @@ function birthdateCheck() {
   const currentDate = new Date();
   const minAge = 15;
   const minBirthdate = new Date(currentDate.getFullYear() - minAge, currentDate.getMonth(), currentDate.getDate());
-  
+
   if (birthdateValue === '') {
     console.log("Date de naissance invalide");
     if (!errorMessage) {
@@ -169,7 +202,7 @@ function birthdateCheck() {
     }
     return false;
   }
-  
+
   const birthdate = new Date(birthdateValue);
 
   if (birthdate > minBirthdate) {
@@ -227,7 +260,7 @@ function quantityCheck() {
 
   console.log("Nombre valide");
   NumberOfTournamentValue = quantityNumber;
-  
+
   if (errorMessage) {
     errorMessage.remove();
   }
@@ -302,6 +335,20 @@ function checkboxCheck() {
   return true;
 }
 
+//            AFFICHAGE MESSAGE DE VALIDATION
+
+function showSuccessMessage() {
+  const successMessage = document.querySelector('.success-message');
+  if (successMessage) {
+    successMessage.remove();
+  }
+  const submitButton = document.getElementById('formSubmit');
+  const newSuccessMessage = document.createElement('p');
+  newSuccessMessage.classList.add('success-message');
+  newSuccessMessage.textContent = "Merci ! Votre réservation a été reçue.";
+  submitButton.insertAdjacentElement('afterend', newSuccessMessage);
+}
+
 //            VALIDATION DU FORMULAIRE
 function validate() {
   const isFirstNameValid = firstCheck();
@@ -314,6 +361,7 @@ function validate() {
 
   if (isFirstNameValid && isLastNameValid && isEmailValid && isBirthdateValid && isQuantityValid && isLocationValid && isCheckboxValid) {
     console.log("Le formulaire est valide");
+    showSuccessMessage();
     return true;
   } else {
     console.log("Le formulaire est invalide");
@@ -323,9 +371,15 @@ function validate() {
 
 const submitButton = document.querySelector('#formSubmit');
 
-submitButton.addEventListener('click', function(event) {
+submitButton.addEventListener('click', function (event) {
   event.preventDefault(); // empêche l'envoi automatique du formulaire
   if (validate()) {
-    form.submit(); // envoie le formulaire
+    // Afficher le message de succès
+    showSuccessMessage();
+
+    // Délaisser l'envoi du formulaire avec un délai de 3 secondes
+    setTimeout(function () {
+      form.submit(); // envoie le formulaire après 3 secondes
+    }, 3000);
   }
 });

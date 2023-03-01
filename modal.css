@@ -421,6 +421,7 @@ input[data-error]::after {
   position: relative;
   text-align: left;
   min-width: 424px;
+  
 }
 .hero-content::after {
   content: "";
@@ -440,6 +441,7 @@ input[data-error]::after {
   font-weight: normal;
   white-space: nowrap;
 }
+
 .hero-text {
   width: 146%;
   font-weight: normal;
@@ -478,6 +480,16 @@ footer {
   padding-right: 2vw;
   margin: 0 20px;
 }
+
+.error-message {
+  color: red;
+}
+
+.success-message{
+  color: green;
+}
+
+
 @media screen and (max-width: 800px) {
   .hero-section {
     display: block;
@@ -497,6 +509,7 @@ footer {
   .hero-headline {
     font-size: 4.5rem;
     white-space: normal;
+
   }
   .hero-text {
     width: unset;
