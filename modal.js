@@ -402,12 +402,22 @@ function checkboxCheck() {
 //            AFFICHAGE MESSAGE DE VALIDATION
 
 function showSuccessMessage() {
+
+  // Recherche d'un message de validation éventuellement déjà créé dans le parent de '.success-message'
+  // Suppression du message de validation s'il existe pour éviter le doublon
   const successMessage = document.querySelector('.success-message');
   if (successMessage) {
     successMessage.remove();
   }
+
+  // Recherche l'élément de soumission du formulaire
+  // Créé un élément "p" qui va contenir le message de validation
   const submitButton = document.getElementById('formSubmit');
   const newSuccessMessage = document.createElement('p');
+
+  // ajoute une classe à 'success-message' à l'élément créé
+  // ajoute du texte à l'élément
+  // ajoute l'élément après l'élément de soumission du formulaire
   newSuccessMessage.classList.add('success-message');
   newSuccessMessage.textContent = "Merci ! Votre réservation a été reçue.";
   submitButton.insertAdjacentElement('afterend', newSuccessMessage);
