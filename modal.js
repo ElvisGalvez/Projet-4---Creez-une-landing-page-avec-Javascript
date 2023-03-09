@@ -40,6 +40,7 @@ function closeModalFunction() {
   modalbg.style.display = "none";
 }
 
+
 // variables pour stocker les valeurs validées pour le formulaire
 let firstNameValue;
 let lastNameValue;
@@ -48,7 +49,6 @@ let dateOfBirthValue;
 let NumberOfTournamentValue;
 let locationValue;
 let checkboxValue;
-
 
 
 //            VALIDATION DU PRENOM
