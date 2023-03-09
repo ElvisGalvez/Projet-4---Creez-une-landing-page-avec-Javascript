@@ -353,7 +353,7 @@ function locationCheck() {
 
   } else {
     console.log("Bouton radio valide");
-    
+
     // Suppression du message d'erreur s'il existe
     if (errorMessage) {
       errorMessage.remove();
@@ -399,9 +399,25 @@ function checkboxCheck() {
   return true;
 }
 
-//            AFFICHAGE MESSAGE DE VALIDATION
-
+// AFFICHAGE MESSAGE DE VALIDATION
 function showSuccessMessage() {
+  // Supprime le formulaire
+  const form = document.getElementById('form');
+  if (form) {
+    form.remove();
+  }
+
+  // Supprime l'étiquette "A quel tournoi souhaitez-vous participer cette année ?"
+  const locationLabel = document.querySelector('.text-label');
+  if (locationLabel) {
+    locationLabel.remove();
+  }
+
+  // Supprime le bouton "C'est parti"
+  const submitButton = document.getElementById('formSubmit');
+  if (submitButton) {
+    submitButton.remove();
+  }
 
   // Recherche d'un message de validation éventuellement déjà créé dans le parent de '.success-message'
   // Suppression du message de validation s'il existe pour éviter le doublon
@@ -410,20 +426,21 @@ function showSuccessMessage() {
     successMessage.remove();
   }
 
-  // Recherche l'élément de soumission du formulaire
   // Créé un élément "p" qui va contenir le message de validation
-  const submitButton = document.getElementById('formSubmit');
   const newSuccessMessage = document.createElement('p');
 
   // ajoute une classe à 'success-message' à l'élément créé
   // ajoute du texte à l'élément
-  // ajoute l'élément après l'élément de soumission du formulaire
+  // ajoute l'élément à la modale
   newSuccessMessage.classList.add('success-message');
   newSuccessMessage.textContent = "Merci ! Votre réservation a été reçue.";
-  submitButton.insertAdjacentElement('afterend', newSuccessMessage);
+  const modalBody = document.querySelector('.modal-body');
+  if (modalBody) {
+    modalBody.appendChild(newSuccessMessage);
+  }
 }
 
-//            VALIDATION DU FORMULAIRE
+// VALIDATION DU FORMULAIRE
 function validate() {
   const isFirstNameValid = firstCheck();
   const isLastNameValid = lastCheck();
@@ -435,7 +452,6 @@ function validate() {
 
   if (isFirstNameValid && isLastNameValid && isEmailValid && isBirthdateValid && isQuantityValid && isLocationValid && isCheckboxValid) {
     console.log("Le formulaire est valide");
-    showSuccessMessage();
     return true;
   } else {
     console.log("Le formulaire est invalide");
@@ -450,10 +466,5 @@ submitButton.addEventListener('click', function (event) {
   if (validate()) {
     // Afficher le message de succès
     showSuccessMessage();
-
-    // Délaye l'envoi du formulaire avec un délai de 3 secondes
-    setTimeout(function () {
-      form.submit(); // envoie le formulaire après 3 secondes
-    }, 3000);
   }
 });
